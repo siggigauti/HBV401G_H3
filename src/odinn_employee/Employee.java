@@ -1,3 +1,4 @@
+package odinn_employee;
 import java.math.BigDecimal;
 
 public class Employee {
