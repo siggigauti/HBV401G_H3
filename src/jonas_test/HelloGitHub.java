@@ -1,10 +1,15 @@
-package trunk.src.jonas_test;
+package jonas_test;
 
 public class HelloGitHub {
 
 	public static void main(String[] args) {
-		System.out.println("Hello GitHub");
+		String a = "Hallo Github";
+		System.out.println(a);
+		halloAgain(a);
 
+	}
+	public static void halloAgain(String a) {
+		System.out.println(a + "...again");
 	}
 
 }
