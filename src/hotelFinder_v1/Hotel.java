@@ -15,6 +15,7 @@ public class Hotel {
 	//private String hotelkedja;
 	private String city;
 	//private int year;
+	private Location hotelLocation;
 	
 	// Hotel constructor
 	public Hotel(int id, String name, String city){
@@ -50,6 +51,16 @@ public class Hotel {
 	public void setCity(String city)
 	{
 		this.city = city;
+	}
+	
+	public void setLocation(String city, String address, double distFromCenter)
+	{
+		this.hotelLocation = new Location(city, address, distFromCenter);
+	}
+	
+	public Location getLocation()
+	{
+		return hotelLocation;
 	}
 	
 	@Override
