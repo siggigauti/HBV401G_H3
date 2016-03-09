@@ -1,4 +1,4 @@
-
+package hotelFinder_v1;	
 public class Main {
 	
 	private static int counter;

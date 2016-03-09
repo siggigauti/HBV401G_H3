@@ -1,4 +1,4 @@
-
+package hotelFinder_v1;
 // En ekki í gegnum sql.
 // Author: Óðinn Helgason
 // Hér ætla ég að gera hotel test classa sem heldur utan um object af "öllum hótelunum okkar"
