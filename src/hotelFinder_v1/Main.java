@@ -26,7 +26,7 @@ public class Main {
 		hotels[2] = new Hotel(3, "Akur", "Akureyri");
 		hotels[3] = new Hotel(4, "Reykur", "Reykjavik");
 		
-		
+		//TestComment
 		
 		//prentar ut objectin
 		/*for(int i = 0; i<hotels.length; i++)
