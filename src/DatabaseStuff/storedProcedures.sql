@@ -9,7 +9,18 @@ CREATE TEMPORARY TABLE freeRooms(
     numPersons int,
     rate int
 );
-
+delimiter $$
+drop procedure if exists createTempTable $$
+create procedure createTempTable()
+begin
+	drop temporary table if exists freeRooms;
+	CREATE TEMPORARY TABLE freeRooms(
+		roomID int,
+		hotelID int,
+		numPersons int,
+		rate int
+);
+end $$
 /*  
  * Usage: call fillFreeRoomsTable( hotel, fromDate, toDate )
  * Pre:	  hotel is the ID of the hotel to search in.
@@ -21,6 +32,7 @@ delimiter $$
 drop procedure if exists fillFreeRoomsTable $$
 create procedure fillFreeRoomsTable( hotel int, fromDate DATE, toDate DATE )
 begin
+	call createTempTable();
 	TRUNCATE TABLE freeRooms; -- Hreinsar freeRooms töfluna.
 	INSERT INTO freeRooms(roomID, hotelID, numPersons, rate)
     SELECT roomID, hotelID, numPersons, rate FROM hotelroom WHERE hotelID = hotel 
@@ -46,7 +58,14 @@ begin
 		Call fillFreeRoomsTable( hotel, fromDate, toDate );
         SELECT roomID FROM freeRooms;
 end $$
-
+delimiter $$
+drop procedure if exists freeRoomsFromToAll $$
+create procedure freeRoomsFromToAll( IN hotel int, IN fromDate DATE, IN toDate DATE)
+begin
+		Call fillFreeRoomsTable( hotel, fromDate, toDate );
+        SELECT hotel.hotelID, hotelName, hotelChain, hotelLocation, roomID, numPersons, rate 
+        FROM hotel JOIN freeRooms ON freeRooms.hotelID = hotel.hotelID;
+end $$
 
 /*
  * Usage: call createBooking( hotel, room, fromDate, toDate )
@@ -83,3 +102,14 @@ begin
 		SELECT roomID FROM freeRooms WHERE numPersons >= numPeople;
 	end if;
 end $$
+
+
+
+
+
+
+
+
+
+
+

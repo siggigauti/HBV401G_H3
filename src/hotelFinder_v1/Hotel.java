@@ -3,6 +3,8 @@ package hotelFinder_v1;
 // Author: Óðinn Helgason
 // Hér ætla ég að gera hotel test classa sem heldur utan um object af "öllum hótelunum okkar"
 
+import java.util.ArrayList;
+
 // er med stillt a enskt keyboard og laga oll comment og faeri yfir a isl.
 	
 //id
@@ -16,13 +18,18 @@ public class Hotel {
 	private String city;
 	//private int year;
 	private Location hotelLocation;
+	private ArrayList<HotelRoom> hotelRooms;
 	
 	// Hotel constructor
-	public Hotel(int id, String name, String city){
+	public Hotel(int id, String name, String city, ArrayList<HotelRoom> hotelRooms){
 		super();
 		this.id = id;
 		this.name = name;
 		this.city = city;
+		this.hotelRooms = hotelRooms;
+	}
+	public ArrayList<HotelRoom> getHotelRooms(){
+		return this.hotelRooms;
 	}
 	
 	public int getId(){

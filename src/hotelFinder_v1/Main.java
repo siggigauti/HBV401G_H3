@@ -1,9 +1,14 @@
-package hotelFinder_v1;	
+package hotelFinder_v1;
+
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class Main {
 	
 	private static int counter;
 	private static int counterValue;
-	public static void main(String[] args){
+	public static void main(String[] args) throws SQLException{
 		
 		/*Hotel Fjorukrain = new Hotel(1, "Fjorukrain", "Hafnarfjordur");
 		System.out.println(Fjorukrain.toString());
@@ -18,14 +23,32 @@ public class Main {
 		//Fyrir Fundin hotel i leitarvelinni okkar.
 		Hotel[] hotels = new Hotel[4];
 		Hotel[] SearchResult = new Hotel[4];
+		HotelRoom[] testRooms = new HotelRoom[2];
 		
 		
+		//Athuga hvernig við getum sleppt því að nota sql.date en samt fengið
+		//sql kóðan til að virka.
+		//Þessar dagsetningar breytast í eitthvað rugl þannig að við fáum öll herbergin sem eru í hotelID = 1.
+		Date checkInDate = new Date(2016, 05, 05);
+		Date checkOutDate = new Date(2016, 05, 07);
+		HotelFinder hotelfinder = new HotelFinder();
+		ArrayList<Hotel> result = hotelfinder.getHotelByID(1, checkInDate, checkOutDate);
+		for (int i = 0; i < result.get(0).getHotelRooms().size() ; i++) {
+			//Prentar út öll hótelherbergin sem komu út
+			System.out.println("Nafn á hóteli: " + result.get(0).getName());
+			System.out.println("Staðsetning hótels: " + result.get(0).getCity());
+			System.out.println("Herbergjanúmer á lausu herbergi: " + result.get(0).getHotelRooms().get(i).getId()  );
+			
+			
+		}	
+		
+		/*
 		//fyllum sidan inni arrayin.
 		hotels[0] = new Hotel(1, "Fjorukrain", "Hafnarfjordur");
 		hotels[1] = new Hotel(2, "Vik", "Reykjavik");
 		hotels[2] = new Hotel(3, "Akur", "Akureyri");
 		hotels[3] = new Hotel(4, "Reykur", "Reykjavik");
-		
+		*/
 		//TestComment
 		
 		//prentar ut objectin
@@ -36,10 +59,12 @@ public class Main {
 		*/
 		
 		//LeitarGLUGGINN
-		String search = "adaw";
+		//String search = "adaw";
 		
 		//test til a[ tjekka hvort getname virkar 
 		//System.out.println("hotel[0].getName: " + hotels[2].getCity());
+		
+		/*
 		boolean found = false;
 		for(int i = 0; i<hotels.length; i++)
 		{
@@ -78,7 +103,7 @@ public class Main {
 			System.out.println("Didnt find anything that matches: " + search);
 		}
 		
-		
+		*/
 		
 		
 		
