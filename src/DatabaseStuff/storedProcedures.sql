@@ -30,17 +30,16 @@ end $$
  */
 delimiter $$
 drop procedure if exists fillFreeRoomsTable $$
-create procedure fillFreeRoomsTable( hotel int, fromDate DATE, toDate DATE )
+create procedure fillFreeRoomsTable(hotel int, fromDate DATE, toDate DATE )
 begin
 	call createTempTable();
-	TRUNCATE TABLE freeRooms; -- Hreinsar freeRooms töfluna.
 	INSERT INTO freeRooms(roomID, hotelID, numPersons, rate)
-    SELECT roomID, hotelID, numPersons, rate FROM hotelroom WHERE hotelID = hotel 
-								 AND roomID NOT IN ( SELECT RoomID
+    SELECT roomID, hotelID, numPersons, rate FROM hotelroom
+											WHERE hotel=hotelID AND
+											roomID NOT IN ( SELECT RoomID
 													 FROM bookings 
-                                                     WHERE HotelID = hotel 
-                                                     AND fromDate >= checkInDate AND fromDate < checkOutDate 
-                                                     OR toDate > CheckInDate AND toDate <= checkOutDate );
+                                                     WHERE fromDate >= checkInDate AND fromDate < checkOutDate 
+													 OR toDate > CheckInDate AND toDate <= checkOutDate );
 end $$
 
 /*  
@@ -60,9 +59,9 @@ begin
 end $$
 delimiter $$
 drop procedure if exists freeRoomsFromToAll $$
-create procedure freeRoomsFromToAll( IN hotel int, IN fromDate DATE, IN toDate DATE)
+create procedure freeRoomsFromToAll(IN hotel int, IN fromDate DATE, IN toDate DATE)
 begin
-		Call fillFreeRoomsTable( hotel, fromDate, toDate );
+		Call fillFreeRoomsTable(hotel, fromDate, toDate);
         SELECT hotel.hotelID, hotelName, hotelChain, hotelLocation, roomID, numPersons, rate 
         FROM hotel JOIN freeRooms ON freeRooms.hotelID = hotel.hotelID;
 end $$
@@ -106,7 +105,7 @@ end $$
 
 
 
-
+call freeRoomsFromToAll(1, "2016-03-04", "2016-03-07")
 
 
 

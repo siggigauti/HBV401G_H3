@@ -40,7 +40,7 @@ public class DBconnect {
 	//Þarf að skoða þetta fall aðeins betur,  ef við ætlum að nota stored procedures þá verðum við að breyta þessu aðeins
 	//Við þyrftum eitt fall fyrir hverja stored procedure því færibreyturnar eru mismunandi og mismargar.
 	//Fall sem skilar niðustöðum úr gagnagrunns query.
-	public ArrayList<ArrayList<String>> queryDataBase( String query, int hotelID,  Date date1,Date date2 ){
+	public ArrayList<ArrayList<String>> queryDataBase( String query, Date date1, Date date2 , int hotelID){
 		ArrayList<ArrayList<String>> returnData = null;
 	
 		
@@ -50,9 +50,10 @@ public class DBconnect {
 			System.out.println("Get ekki búið til statement");
 		}
 		try {
+			//Gamli kóðinn fyrir Stored Procedure, (spurning um að hafa hann í smá stund ef við skyldum vilja nota hann aftur?)
 			cs = (CallableStatement)dbcon.prepareCall(query);
 			//Hérna koma færibreyturnar inn í stored procedure.
-			cs.setInt(1, 1);
+			cs.setInt(1, hotelID);
 			cs.setDate(2, date1);
 			cs.setDate(3,  date2);
 			//Kallað á stored procedure
@@ -60,14 +61,15 @@ public class DBconnect {
 			//Niðurstöður settar í resultSet
 			resultSet = cs.getResultSet();
 			
+			//resultSet = stmt.executeQuery(query);
+			
 		} catch (Exception e) {
 			System.out.println("Get ekki fengið result!"+e);
 		}
 		
 		
 		try {
-			System.out.println("Breyti gögnum");
-			
+			System.out.println("Breyti gögnum í lista af strengjum");	
 			returnData = convertResultSetToLists(resultSet);
 		} catch (Exception e) {
 			System.out.println("Gat ekki breytt gögnum í lista :(" + e);
