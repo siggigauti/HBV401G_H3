@@ -12,7 +12,7 @@ import com.mysql.jdbc.Statement;
 import java.sql.Date;
 
 public class DBconnect {
-	//Nafnið á database er fyrir aftan aftasta skástrikið 
+	//Nafnið á database er fyrir aftan aftasta skástrikið  
 	//Þetta er á forminu hostinn:port(mysql port)/database name
 	private String url = "jdbc:mysql://localhost:3306/hotelsearch";
 	//Hvaða user eru þið að nota til að tengjast?
