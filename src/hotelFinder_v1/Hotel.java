@@ -14,17 +14,16 @@ import java.util.ArrayList;
 public class Hotel {
 	private int id;
 	private String name;
-	//private String hotelkedja;
+	private String hotelChain;
 	private String city;
-	//private int year;
-	private Location hotelLocation;
 	private ArrayList<HotelRoom> hotelRooms;
 	
 	// Hotel constructor
-	public Hotel(int id, String name, String city, ArrayList<HotelRoom> hotelRooms){
+	public Hotel(int id, String name, String city, String hotelChain, ArrayList<HotelRoom> hotelRooms){
 		super();
 		this.id = id;
 		this.name = name;
+		this.hotelChain = hotelChain;
 		this.city = city;
 		this.hotelRooms = hotelRooms;
 	}
@@ -59,7 +58,7 @@ public class Hotel {
 	{
 		this.city = city;
 	}
-	
+	/*             MEÐAN VIÐ NOTUM EKKI LOCATION
 	public void setLocation(String city, String address, double distFromCenter)
 	{
 		this.hotelLocation = new Location(city, address, distFromCenter);
@@ -69,7 +68,7 @@ public class Hotel {
 	{
 		return hotelLocation;
 	}
-	
+	*/
 	@Override
 	public String toString(){
 		return "[ id : " + id + " ]"   + "\n" +  "[ name : " + name + " ]" + "\n" + "[ city : " + city + " ]" + "\n";

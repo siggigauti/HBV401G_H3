@@ -10,7 +10,7 @@ public class HotelFinder {
 	
 	DBconnect conn = new DBconnect();
 	
-	public  ArrayList<Hotel> getHotelByName(String name, Date checkInDate, Date checkOutDate){
+	public ArrayList<Hotel> getHotelByName(String name, Date checkInDate, Date checkOutDate){
 		
 		
 		//Þetta return er bara temp til að losna við villuna að það vanti return.
@@ -25,6 +25,8 @@ public class HotelFinder {
 		
 		return hotelConstructor( hotelData );	
 	}
+	//Hér búum við svo til föll til að query'a DB með mismunandi skilyrðum.
+	//Siggi er að vinna í generic dags1 til dags2, öll hótel og rooms laus á þeim tíma.
 	
 	private ArrayList<Hotel> hotelConstructor( ArrayList<ArrayList<String>> hotelData ){
 		
@@ -37,13 +39,6 @@ public class HotelFinder {
 	
 		ArrayList<Hotel> returnHotels = new ArrayList<Hotel>();
 		ArrayList<HotelRoom> hotelRooms = new ArrayList<HotelRoom>();
-		//hotelData[0] = hotelID
-		//hotelData[1] = hotelname
-		//hotelData[2] = hotelchain
-		//hotelData[3] = hotellocation
-		//hotelData[4] = roomID
-		//hotelData[5] = numPersons
-		//hotelData[6] = rate
 	
 		//Upphafstilli prevHotelID svona til þess að búa ekki til hótel
 		//um leið og lykkjan keyrir sig í gang.  Hótelin eiga að vera búin til
@@ -51,21 +46,10 @@ public class HotelFinder {
 		prevHotelID =  Integer.parseInt(  hotelData.get(0).get(0) );
 		
 		for (int i = 0; i < hotelData.get(0).size(); i++) {
-			
-			
-			
-			/*System.out.println(hotelData.get(0).get(i));
-			System.out.println(hotelData.get(1).get(i));
-			System.out.println(hotelData.get(2).get(i));
-			System.out.println(hotelData.get(3).get(i));
-			System.out.println(hotelData.get(4).get(i));
-			System.out.println(hotelData.get(5).get(i));
-			System.out.println(hotelData.get(6).get(i));
-			*/			
+		
 			hotelName = hotelData.get(1).get(i);
 			hotelChain = hotelData.get(2).get(i);
 			hotelLocation = hotelData.get(3).get(i);
-			
 			
 			//Breytir string yfir í int þar sem þarf.
 			hotelID = Integer.parseInt(  hotelData.get(0).get(i) );
@@ -82,7 +66,7 @@ public class HotelFinder {
 				//Bætum inn nýju hóteli með herbergjunum sem við bjuggum til í seinustu ítrunum.
 				//Setjum gömlu gildin vegna þess að við erum að búa til hótel sem er með herbergin sem við vorum að
 				//búa til í seinustu ítrunum.  Þegar við erum komnir á þennan stað í lykkjunni þá er komið nýtt hótel í HotelName.
-				returnHotels.add( new Hotel( prevHotelID, prevHotelName, prevHotelLocation, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)) ));	
+				returnHotels.add( new Hotel( prevHotelID, prevHotelName, prevHotelLocation, prevHotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)) ));	
 				from = to;
 				
 			}
@@ -103,8 +87,8 @@ public class HotelFinder {
 		
 		//Bý til seinasta hótelið ef það eru einhver herbergi í herbergjalistanum.
 		if(hotelRooms.size() > 0){
-		System.out.println("Bý til hlut fyrir hótelið: " + hotelName+" það er með " + hotelRooms.subList(from, to).size() + " laus herbergi.");
-		returnHotels.add( new Hotel( hotelID,hotelName, hotelLocation, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)) ));	
+		System.out.println("Bý til hlut fyrir hótelið: " + hotelName+", það er með " + hotelRooms.subList(from, to).size() + " laus herbergi.");
+		returnHotels.add( new Hotel( hotelID,hotelName, hotelLocation, hotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)) ));	
 		}
 		
 		

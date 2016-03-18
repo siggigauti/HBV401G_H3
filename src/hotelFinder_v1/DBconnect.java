@@ -1,6 +1,5 @@
 package hotelFinder_v1;
 
-
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +13,9 @@ import java.sql.Date;
 
 public class DBconnect {
 	//Nafnið á database er fyrir aftan aftasta skástrikið 
+	//Þetta er á forminu hostinn:port(mysql port)/database name
 	private String url = "jdbc:mysql://localhost:3306/hotelsearch";
+	//Hvaða user eru þið að nota til að tengjast?
 	private String userName = "root";
     private Connection dbcon;
 	private ResultSet resultSet = null;
@@ -33,6 +34,7 @@ public class DBconnect {
 	
 	//Fall sem tengist gagnagrunninum.
 	private void connectToDataBase() throws SQLException{
+		//Tengjums: getConnection( url, user, pass)
 		dbcon = (Connection)DriverManager.getConnection(url, userName, "");	
 	}
 	
