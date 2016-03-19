@@ -54,6 +54,11 @@ public class Hotel {
 		return city;
 	}
 	
+	public String getChain()
+	{
+		return this.hotelChain;
+	}
+	
 	public void setCity(String city)
 	{
 		this.city = city;

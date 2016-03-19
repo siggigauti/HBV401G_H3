@@ -13,70 +13,60 @@ public class HotelFinder {
 	public HotelFinder(){
 		conn  = new DBconnect();
 	}
+
+	// ####################################################################################### //
+	// #####    Hér búum við svo til föll til að query'a DB með mismunandi skilyrðum.    ##### //
+	// ####################################################################################### //
 	
-	public ArrayList<Hotel> getHotelByName(String name, Date checkInDate, Date checkOutDate){
-		
-		
-		//Þetta return er bara temp til að losna við villuna að það vanti return.
-		return new  ArrayList<Hotel>();
-	}
-	
-	public ArrayList<Hotel> getFreeRoomsFromHotel(int hotelID, String checkInDate, String checkOutDate ){
+	//Fall sem finnur öll laus hótelherbergi í ákveðnu hóteli
+	public ArrayList<Hotel> getFreeRoomsFromHotel(String hotelName, String checkInDate, String checkOutDate ){
 				
 		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
-		hotelData = conn.queryDataBase( "{call freeRoomsInHotel(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), hotelID );		
+		hotelData = conn.queryDataBase( "{call freeRoomsInHotel(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), hotelName );		
 		return hotelConstructor( hotelData );	
 	}
-	//Hér búum við svo til föll til að query'a DB með mismunandi skilyrðum.
-
-	//Þetta *ætti* að finna öll rooms sem eru laus á þessum dögum sama hvaða hótel er.
-	public ArrayList<Hotel> getFreeRoomsFromAnyHotel( String checkInDate, String checkOutDate ){
-		
-		/*DBconnect conn  = new DBconnect();
-		
-		ArrayList<Hotel> hotelData = new ArrayList<Hotel>();
-		
-		System.out.println("Sækja öll hotel IDS og setja í array.");
-		int[] allHotels = conn.getHotelIDs();
-		System.out.println("HotelID's sem ég sótti: " +allHotels[0]+", "+allHotels[1]+", "+allHotels[2]+", "+allHotels[3]);
-		for(int i = 0; i<allHotels.length; i++ ){
-			ArrayList<Hotel> tempHotel = getFreeRoomsFromHotel(allHotels[i], checkInDate, checkOutDate);
-			for(int j = 0; j < tempHotel.size(); j++){
-				//Fyllir hotelData með öllum hótelunum úr tempHotel.
-				hotelData.add(tempHotel.get(j));
-			}
-			//Hreinsum listan fyrir næsta iteration.
-			tempHotel.clear();
-		}
-		
-		//result er ArrayList<Hotel>
-		//result.get(0) er fyrsta hótelið.
-		//result.size() er stærðin á listanum.
-		*/
-		
-		
-		//Spurning með að gera þetta svona i staðin?
+	
+	//Fall sem finnur öll laus hótelherbergi í ákveðnu location
+	public ArrayList<Hotel> getFreeRoomsFromHotelLocation(String hotelLocation, String checkInDate, String checkOutDate ){
+				
 		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
-		// hotelID = -1 er til að láta vita að við ætlum ekki að leita í sérstöku hóteli.
-		hotelData = conn.queryDataBase( "{call freeRoomsAllHotels(?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), -1 );	
+		hotelData = conn.queryDataBase( "{call freeRoomsLocation(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), hotelLocation );		
+		return hotelConstructor( hotelData );	
+	}
+	
+	//Fall sem finnur öll laus hótelherbergi í ákveðnu location
+	public ArrayList<Hotel> getFreeRoomsFromHotelChain(String hotelChainName, String checkInDate, String checkOutDate ){
+				
+		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
+		hotelData = conn.queryDataBase( "{call freeRoomsHotelChain(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), hotelChainName );		
+		return hotelConstructor( hotelData );	
+	}
+
+	//Fall sem finnur öll laus hótelherbergi í öllum hótelum.
+	public ArrayList<Hotel> getFreeRoomsFromAnyHotel( String checkInDate, String checkOutDate ){
+		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
+		// hotelString = null er til að láta vita að við ætlum ekki að leita í öllum hótelum
+		hotelData = conn.queryDataBase( "{call freeRoomsAllHotels(?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), null );	
 		return hotelConstructor( hotelData );
 	}
 	
 	private ArrayList<Hotel> hotelConstructor( ArrayList<ArrayList<String>> hotelData ){
 		
 		if(hotelData.get(0).isEmpty()){
+			System.out.println("Engin gögn fundust");
 			return new ArrayList<Hotel>();
 		}
 		else{
 			System.out.println("Komin í hotelconstructor. Er með þessi gögn:");
 			System.out.println(hotelData);
+			System.out.println("Brjótum gögnin niður og smíðum hluti...");
 			String hotelName="", hotelLocation="", hotelChain="";
 			String prevHotelName = "",prevHotelLocation = "",prevHotelChain = "";
 			int hotelID = -1, prevHotelID, roomID, numPersons, rate;
 			//From og to breyturnar eru notaðar því ég lenti í óleysanlegu böggi með hotelRooms.clear() fallinu.
 			int from=0, to=0;
 		
-		
+			//Breyturnar sem geyma hótelin og hótelherbergin sem við ætlum að skila.
 			ArrayList<Hotel> returnHotels = new ArrayList<Hotel>();
 			ArrayList<HotelRoom> hotelRooms = new ArrayList<HotelRoom>();
 		
@@ -124,12 +114,12 @@ public class HotelFinder {
 			if(hotelRooms.size() > 0){
 			System.out.println("Bý til hlut fyrir hótelið: " + hotelName+", það er með " + hotelRooms.subList(from, to).size() + " laus herbergi. HotelID er: "+hotelID);
 			returnHotels.add( new Hotel( hotelID,hotelName, hotelLocation, hotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)) ));	
-			}
-					
+			}			
 			return returnHotels;
 		}
 	}
 	
+	//Fall sem breytir dagsetningu á strengjaformi yfir á sql.date form
 	private Date convertToSqlDate(String date){
 		
 		DateFormat formatter = new SimpleDateFormat("yyy-MM-dd");

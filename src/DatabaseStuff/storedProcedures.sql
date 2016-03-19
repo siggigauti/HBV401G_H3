@@ -21,11 +21,11 @@ end $$
  */
 delimiter $$
 drop procedure if exists freeRoomsInHotel $$
-create procedure freeRoomsInHotel(IN hotel int, IN fromDate DATE, IN toDate DATE)
+create procedure freeRoomsInHotel(hotel VARCHAR(50), fromDate DATE, toDate DATE)
 begin
 		Call fillFreeRoomsTableAllHotels(fromDate, toDate);
         SELECT hotel.hotelID, hotelName, hotelChain, hotelLocation, roomID, numPersons, rate 
-        FROM hotel JOIN freeRooms ON freeRooms.hotelID = hotel.hotelID WHERE freeRooms.hotelID = hotel;
+        FROM hotel JOIN freeRooms ON freeRooms.hotelID = hotel.hotelID WHERE hotel.hotelName = hotel;
 end $$
 
 /*
@@ -76,9 +76,40 @@ begin
 end $$
 delimiter $$
 
+/*
+ * Usage: call freeRoomsLocation(location, fromDate, toDate )
+ * Pre:   location is the location we want to search in.  
+ *		  fromDate and toDate are the checkin and checkout dates.
+ * Post:  Returns data about all hotels and rooms that are not occupied between the dates.
+ */
+delimiter $$
+drop procedure if exists freeRoomsLocation $$
+create procedure freeRoomsLocation(location VARCHAR(50), fromDate DATE, toDate DATE )
+begin
+		Call fillFreeRoomsTableAllHotels(fromDate, toDate );
+        SELECT hotel.hotelID, hotelName, hotelChain, hotelLocation, roomID, numPersons, rate 
+        FROM hotel JOIN freeRooms ON freeRooms.hotelID = hotel.hotelID WHERE hotelLocation = location;
+end $$
+delimiter $$
+
+/*
+ * Usage: call freeRoomsHotelChain(chain, fromDate, toDate )
+ * Pre:   chain is the hotelchain we want to search for hotels in.  
+ *		  fromDate and toDate are the checkin and checkout dates.
+ * Post:  Returns data about all hotels and rooms that are not occupied between the dates.
+ */
+delimiter $$
+drop procedure if exists freeRoomsHotelChain $$
+create procedure freeRoomsHotelChain(chainName VARCHAR(50), fromDate DATE, toDate DATE )
+begin
+		Call fillFreeRoomsTableAllHotels(fromDate, toDate );
+        SELECT hotel.hotelID, hotelName, hotelChain, hotelLocation, roomID, numPersons, rate 
+        FROM hotel JOIN freeRooms ON freeRooms.hotelID = hotel.hotelID WHERE hotelChain = chainName;
+end $$
+delimiter $$
 
 
-call freeRoomsAllHotels("2016-05-06", "2016-05-08")
+call freeRoomsLocation("Reykasdjavík", "2016-05-06", "2016-05-08")
 
 
 

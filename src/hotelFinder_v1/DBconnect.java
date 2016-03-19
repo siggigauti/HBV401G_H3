@@ -42,7 +42,7 @@ public class DBconnect {
 	//Þarf að skoða þetta fall aðeins betur,  ef við ætlum að nota stored procedures þá verðum við að breyta þessu aðeins
 	//Við þyrftum eitt fall fyrir hverja stored procedure því færibreyturnar eru mismunandi og mismargar.
 	//Fall sem skilar niðustöðum úr gagnagrunns query.
-	public ArrayList<ArrayList<String>> queryDataBase( String query, Date date1, Date date2 , int hotelID){
+	public ArrayList<ArrayList<String>> queryDataBase( String query, Date date1, Date date2 , String hotelString){
 		ArrayList<ArrayList<String>> returnData = new ArrayList<ArrayList<String>>();		
 		try {
 			stmt = (Statement)dbcon.createStatement();	
@@ -55,8 +55,8 @@ public class DBconnect {
 			//Hérna koma færibreyturnar inn í stored procedure.
 			
 			//Ef hotelID er staerra en -1 tha erum vid ad leita ad serstoku hoteli. Annars leitum vid i ollum hotelum.
-			if(hotelID >= 0){
-				cs.setInt(1, hotelID);
+			if(hotelString != null){
+				cs.setString(1, hotelString);
 				cs.setDate(2, date1);
 				cs.setDate(3,  date2);
 			}
@@ -158,5 +158,4 @@ public class DBconnect {
 
 	    }
 	  }
-	
 }
