@@ -10,6 +10,10 @@ public class HotelFinder {
 	
 	DBconnect conn;
 	
+	public HotelFinder(){
+		conn  = new DBconnect();
+	}
+	
 	public ArrayList<Hotel> getHotelByName(String name, Date checkInDate, Date checkOutDate){
 		
 		
@@ -18,13 +22,9 @@ public class HotelFinder {
 	}
 	
 	public ArrayList<Hotel> getFreeRoomsFromHotel(int hotelID, String checkInDate, String checkOutDate ){
-		
-		DBconnect conn  = new DBconnect();
-		
+				
 		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
-		
-		hotelData = conn.queryDataBase( "{call freeRoomsFromToAll(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), hotelID );	
-		
+		hotelData = conn.queryDataBase( "{call freeRoomsInHotel(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), hotelID );		
 		return hotelConstructor( hotelData );	
 	}
 	//Hér búum við svo til föll til að query'a DB með mismunandi skilyrðum.
@@ -32,7 +32,7 @@ public class HotelFinder {
 	//Þetta *ætti* að finna öll rooms sem eru laus á þessum dögum sama hvaða hótel er.
 	public ArrayList<Hotel> getFreeRoomsFromAnyHotel( String checkInDate, String checkOutDate ){
 		
-		DBconnect conn  = new DBconnect();
+		/*DBconnect conn  = new DBconnect();
 		
 		ArrayList<Hotel> hotelData = new ArrayList<Hotel>();
 		
@@ -52,8 +52,14 @@ public class HotelFinder {
 		//result er ArrayList<Hotel>
 		//result.get(0) er fyrsta hótelið.
 		//result.size() er stærðin á listanum.
+		*/
 		
-		return hotelData;
+		
+		//Spurning með að gera þetta svona i staðin?
+		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
+		// hotelID = -1 er til að láta vita að við ætlum ekki að leita í sérstöku hóteli.
+		hotelData = conn.queryDataBase( "{call freeRoomsAllHotels(?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), -1 );	
+		return hotelConstructor( hotelData );
 	}
 	
 	private ArrayList<Hotel> hotelConstructor( ArrayList<ArrayList<String>> hotelData ){
@@ -90,9 +96,7 @@ public class HotelFinder {
 				roomID = Integer.parseInt(hotelData.get(4).get(i));
 				numPersons = Integer.parseInt(hotelData.get(5).get(i));
 				rate = Integer.parseInt(hotelData.get(6).get(i));
-				
-				
-				
+						
 				//Ef hotel id breytist þá þarf að búa til nýjan hotel hlut
 				//því við erum komnir í annað hotel. Búum einnig til nýtt hótel ef við erum komnir á seinasta herbergið.
 				if(hotelID != prevHotelID){	
@@ -102,16 +106,13 @@ public class HotelFinder {
 					//búa til í seinustu ítrunum.  Þegar við erum komnir á þennan stað í lykkjunni þá er komið nýtt hótel í HotelName.
 					returnHotels.add( new Hotel( prevHotelID, prevHotelName, prevHotelLocation, prevHotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)) ));	
 					from = to;
-					
-				}
-				
+				}		
 								
 				prevHotelID = hotelID;
 				prevHotelChain = hotelChain;
 				prevHotelLocation = hotelLocation;
 				prevHotelName = hotelName;
-				
-				
+						
 				//Það þarf að bæta inn nýju herbergi í hverri ítrun lykkjunar.
 				//Býr til nýtt hótelherbergi og bætir í lista.
 				System.out.println("Bæti hótelherbergi með roomID: " + roomID);
@@ -124,8 +125,7 @@ public class HotelFinder {
 			System.out.println("Bý til hlut fyrir hótelið: " + hotelName+", það er með " + hotelRooms.subList(from, to).size() + " laus herbergi. HotelID er: "+hotelID);
 			returnHotels.add( new Hotel( hotelID,hotelName, hotelLocation, hotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)) ));	
 			}
-			
-			
+					
 			return returnHotels;
 		}
 	}
@@ -137,8 +137,7 @@ public class HotelFinder {
 		try {
 			parsedDate = formatter.parse(date);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e);
 		}
 		Date returnDate = new Date(parsedDate.getTime());
 		

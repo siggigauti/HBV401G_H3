@@ -1,19 +1,15 @@
 package hotelFinder_v1;
 
-import java.util.Date;
+
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Main {
 	
-	private static int counter;
-	private static int counterValue;
 	public static void main(String[] args) throws SQLException{
 		
 		int whatToCall = 1; 
+		String checkInDate = "2016-05-06", checkOutDate = "2016-05-08";
 		if(whatToCall == 0){
 			//Eftirfarandi forritsbútur finnur öll lausu herbergin í hóteli með hotelID = 1 og setur öll herbergin og hótelið upp í hluti.
 			//Hlutirnir eru geymdir í ArrayList af Hotel hlutum.
@@ -22,7 +18,7 @@ public class Main {
 			//það væri samt gott að geta minnkað gögnin eitthvað sem kemur frá sql og fiffað classconstructorinn til í samræmi við það.
 			//Ef það heppnast ekki þá erum við samt með classconstructor sem virkar fínt! :)
 			int hotelID = 2;
-			String checkInDate = "2016-05-06", checkOutDate = "2016-05-08";
+			
 			HotelFinder hotelfinder = new HotelFinder();		
 			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotel(hotelID, checkInDate, checkInDate);
 			for (int i = 0; i < result.size(); i++) {
@@ -40,7 +36,6 @@ public class Main {
 		else if(whatToCall == 1){
 			//Veldu dags hér að neðan, þetta *ætti* að búa til öll hótel sem eru með laus herbergi á timabilinu.
 			//Endilega debuggið og tékkið hvort þið getið brotið þetta. Ekki optimal kóði en virkar.
-			String checkInDate = "2016-05-06", checkOutDate = "2016-05-08";
 			HotelFinder hotelfinder = new HotelFinder();		
 			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromAnyHotel( checkInDate, checkInDate);
 			for (int i = 0; i < result.size(); i++) {

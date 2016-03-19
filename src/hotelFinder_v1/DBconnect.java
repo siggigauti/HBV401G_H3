@@ -53,9 +53,18 @@ public class DBconnect {
 			//Gamli kóðinn fyrir Stored Procedure, (spurning um að hafa hann í smá stund ef við skyldum vilja nota hann aftur?)
 			cs = (CallableStatement)dbcon.prepareCall(query);
 			//Hérna koma færibreyturnar inn í stored procedure.
-			cs.setInt(1, hotelID);
-			cs.setDate(2, date1);
-			cs.setDate(3,  date2);
+			
+			//Ef hotelID er staerra en -1 tha erum vid ad leita ad serstoku hoteli. Annars leitum vid i ollum hotelum.
+			if(hotelID >= 0){
+				cs.setInt(1, hotelID);
+				cs.setDate(2, date1);
+				cs.setDate(3,  date2);
+			}
+			else{
+				cs.setDate(1, date1);
+				cs.setDate(2,  date2);			
+			}
+			
 			//Kallað á stored procedure
 			cs.execute();
 			//Niðurstöður settar í resultSet
@@ -76,6 +85,7 @@ public class DBconnect {
 		return returnData;		
 	}
 	
+	/*
 	public int[] getHotelIDs(){
 		int[] returnData = null; //Þarf að vera null.
 		int total = 0;
@@ -101,10 +111,11 @@ public class DBconnect {
 			System.out.println("Gat ekki náð í dótið: "+e);
 		}
 		finally{
+			//Lokar tengingunni eftir ad buid er ad na i gogn ur database.
 			closeConnection();
 		}
 		return returnData;
-	}
+	}*/
 	
 	private ArrayList<ArrayList<String>> convertResultSetToLists( ResultSet result) throws SQLException{
 		int numColumns = result.getMetaData().getColumnCount();
