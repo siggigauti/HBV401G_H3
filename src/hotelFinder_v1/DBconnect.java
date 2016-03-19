@@ -43,9 +43,7 @@ public class DBconnect {
 	//Við þyrftum eitt fall fyrir hverja stored procedure því færibreyturnar eru mismunandi og mismargar.
 	//Fall sem skilar niðustöðum úr gagnagrunns query.
 	public ArrayList<ArrayList<String>> queryDataBase( String query, Date date1, Date date2 , int hotelID){
-		ArrayList<ArrayList<String>> returnData = null;
-	
-		
+		ArrayList<ArrayList<String>> returnData = new ArrayList<ArrayList<String>>();		
 		try {
 			stmt = (Statement)dbcon.createStatement();	
 		} catch (Exception e) {
@@ -62,14 +60,9 @@ public class DBconnect {
 			cs.execute();
 			//Niðurstöður settar í resultSet
 			resultSet = cs.getResultSet();
-			
-			//resultSet = stmt.executeQuery(query);
-			
 		} catch (Exception e) {
-			System.out.println("Get ekki fengið result!"+e);
+			System.out.println("Get ekki fengið result! "+e);
 		}
-		
-		
 		try {
 			System.out.println("Breyti gögnum í lista af strengjum");	
 			returnData = convertResultSetToLists(resultSet);
@@ -80,9 +73,37 @@ public class DBconnect {
 			closeConnection();
 		}
 		//closeConnection();
+		return returnData;		
+	}
+	
+	public int[] getHotelIDs(){
+		int[] returnData = null; //Þarf að vera null.
+		int total = 0;
+		ResultSet rs;
+		try {
+			stmt = (Statement)dbcon.createStatement();	
+		} catch (Exception e) {
+			System.out.println("Get ekki búið til statement");
+		}
+		try {
+			String sql ="SELECT HotelID FROM hotel";
+			rs = stmt.executeQuery(sql);
+			rs.last();
+			total = rs.getRow();
+			returnData = new int[total];
+			rs.beforeFirst();
+			int i = 0;
+			while( rs.next()){
+				returnData[i] = rs.getInt("hotelID");
+				i++;
+			}
+		} catch (Exception e) {
+			System.out.println("Gat ekki náð í dótið: "+e);
+		}
+		finally{
+			closeConnection();
+		}
 		return returnData;
-		
-		
 	}
 	
 	private ArrayList<ArrayList<String>> convertResultSetToLists( ResultSet result) throws SQLException{
