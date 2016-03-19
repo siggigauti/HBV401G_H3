@@ -141,8 +141,7 @@ public class HotelFinder {
 		}
 		Date returnDate = new Date(parsedDate.getTime());
 		
-		return returnDate;
-		
+		return returnDate;		
 	}
 	
 }

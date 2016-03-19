@@ -70,7 +70,7 @@ delimiter $$
 drop procedure if exists freeRoomsAllHotels $$
 create procedure freeRoomsAllHotels(fromDate DATE, toDate DATE )
 begin
-		Call fillFreeRoomsTableAllRooms(fromDate, toDate );
+		Call fillFreeRoomsTableAllHotels(fromDate, toDate );
         SELECT hotel.hotelID, hotelName, hotelChain, hotelLocation, roomID, numPersons, rate 
         FROM hotel JOIN freeRooms ON freeRooms.hotelID = hotel.hotelID;
 end $$
