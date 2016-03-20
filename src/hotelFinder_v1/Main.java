@@ -21,7 +21,7 @@ public class Main {
 		if(whatToCall == 0){
 			System.out.println("Leitum í hótelum með hótelnafninu: " + hotelName);
 			HotelFinder hotelfinder = new HotelFinder();		
-			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotel(hotelName, checkInDate, checkInDate);
+			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotel(hotelName, checkInDate, checkOutDate);
 			for (int i = 0; i < result.size(); i++) {
 				System.out.println("####################################################");
 				System.out.println("Nafn á hóteli: " + result.get(i).getName());
@@ -40,7 +40,7 @@ public class Main {
 		else if(whatToCall == 1){
 			System.out.println("Leitum í öllum hótelum");
 			HotelFinder hotelfinder = new HotelFinder();		
-			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromAnyHotel( checkInDate, checkInDate);
+			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromAnyHotel( checkInDate, checkOutDate);
 			for (int i = 0; i < result.size(); i++) {
 				System.out.println("####################################################");
 				System.out.println("Nafn á hóteli: " + result.get(i).getName());
@@ -59,7 +59,7 @@ public class Main {
 		else if(whatToCall == 2){
 			System.out.println("Leitum í hótelum með staðsetningu: " + hotelLocation);
 			HotelFinder hotelfinder = new HotelFinder();		
-			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotelLocation( hotelLocation, checkInDate, checkInDate);
+			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotelLocation( hotelLocation, checkInDate, checkOutDate);
 			for (int i = 0; i < result.size(); i++) {
 				System.out.println("####################################################");
 				System.out.println("Nafn á hóteli: " + result.get(i).getName());
@@ -78,7 +78,7 @@ public class Main {
 		else if(whatToCall == 3){
 			System.out.println("Leitum í hótelum með hótelkeðju: " + hotelChain);
 			HotelFinder hotelfinder = new HotelFinder();		
-			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotelChain(hotelChain, checkInDate, checkInDate);
+			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotelChain(hotelChain, checkInDate, checkOutDate);
 			for (int i = 0; i < result.size(); i++) {
 				System.out.println("####################################################");
 				System.out.println("Nafn á hóteli: " + result.get(i).getName());
