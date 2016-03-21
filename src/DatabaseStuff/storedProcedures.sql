@@ -125,7 +125,7 @@ end $$
 delimiter $$
 
 /*
- * Usage: call freeRoomsHotelSubName( hotelName )
+ * Usage: call getHotelFacilities( hotelName )
  * Pre:   hotelName is the name of the hotel.
  * Post:  Returns data about all facilities that belong to the hotel.
  */
