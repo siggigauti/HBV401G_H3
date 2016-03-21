@@ -170,14 +170,25 @@ public class HotelFinder {
 	
 	//Notkun: book(hotelID, roomID);
 	//Fyrir: Víðværu breyturnar checkIn og checkOut eru búnar að staðfesta að herbergin eru laus.
-	//       Þau ID sem notandin hefur aðgang að eru laus á dögunum á milli checkIn og checkOut.
-	//       hotelID er ID fyrir hótelið sem er verið að bóka.
-	//       roomID er ID á því herbergi sem verið er að bóka.
-	//       Nýtir sér víðværu breyturnar checkInDate og checkOutDate í hotelFinder obj.
+	//       hotel er Hotel object og inniheldur herbergin sem eru laus á tímabilinu.
+	//       roomID er löglegt id á herbergi.
 	//Eftir: Búið er að búa til nýja röð í bookings í DB sem tilgreinir að herbergið er frátekið.
-	public void book(int hotelID, int roomID){
-		Booker booker = new Booker();
-		booker.book(hotelID, roomID, convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate));
+	public void book(Hotel hotel, int roomID){
+		boolean booked = false;
+		for(int i = 0; i < hotel.getHotelRooms().size(); i++){
+			if(hotel.getHotelRooms().get(i).getId() == roomID){
+				Booker booker = new Booker();
+				booker.book(hotel, roomID, convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate));
+				booked = true;
+			}
+		}
+		if(booked==true){
+			System.out.println("Bókun tókst, herbergið er bókað fyrir tíman "+checkInDate+" til "+checkOutDate);
+		}
+		else{
+			System.out.println("Bókun tókst ekki! Gefið roomID var ekki til í listanum af hótelherbergjum fyrir gefið hótel.");
+		}
+		
 	}
 	
 }

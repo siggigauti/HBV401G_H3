@@ -12,48 +12,52 @@ public class Main {
 		//WhatToCall = 2 -> Leita eftir staðsetningu
 		//WhatToCall = 3 -> Leita eftir hótelkeðju
 		//WhatToCall = 4 -> Leita eftir substring í hótelnafni.
-		//WhatToCall = 5 -> bóka eftir hotelID og roomID.
+		//WhatToCall = 5 -> bóka eftir hotel og roomID.
 		int whatToCall = 1; 
-		int hotelID = 1; //Notað í booking, passa að herbergið er laust! Það er ekki automatic check komið.
-		int roomID = 11; //Notað í booking, passa að herbergið er laust! Það er ekki automatic check komið.
+		int hotelNR = 1; //Þetta er hvaða hótel úr listanum á að bóka úr.
+		int roomID = 11; //Þetta er roomID á því herbergi sem á að bóka, hendir villu ef roomID passar ekki við eitthvað herbergi.
+		
+		//Hér er listin af hótelunum sem eru með laus herbergi.
+		ArrayList<Hotel> result = new ArrayList<Hotel>();
 		
 		//Hér fyrir neðan eru breytur sem við getum notað til að þrengja leitina.
 		String checkInDate = "2016-05-06", checkOutDate = "2016-05-08";
 		String hotelName = "Hótel Reykjavík", hotelChain = "Radison", hotelLocation = "Reykjavík", hotelNameSubString = "Reyk";
-		HotelFinder hotelfinder = new HotelFinder(checkInDate, checkOutDate);		
+		HotelFinder hotelfinder = new HotelFinder(checkInDate, checkOutDate);
+		
 		//Leitum eftir hótelnafni
 		if(whatToCall == 0){
 			System.out.println("Leitum í hótelum með hótelnafninu: " + hotelName);
-			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotel(hotelName);
+			result = hotelfinder.getFreeRoomsFromHotel(hotelName);
 			printHotelArrayInfo( result, checkInDate, checkOutDate );
 		}
 		//Leitum í öllum hótelum
 		else if(whatToCall == 1){
 			System.out.println("Leitum í öllum hótelum");
-			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromAnyHotel();
+			result = hotelfinder.getFreeRoomsFromAnyHotel();
 			printHotelArrayInfo( result, checkInDate, checkOutDate );
 		}
 		//Leitum eftir hótel staðsetningu
 		else if(whatToCall == 2){
 			System.out.println("Leitum í hótelum með staðsetningu: " + hotelLocation);
-			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotelLocation( hotelLocation);
+			result = hotelfinder.getFreeRoomsFromHotelLocation( hotelLocation);
 			printHotelArrayInfo( result, checkInDate, checkOutDate );
 		}
 		//Leitum eftir hótelkeðju
 		else if(whatToCall == 3){
 			System.out.println("Leitum í hótelum með hótelkeðju: " + hotelChain);
-			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromHotelChain(hotelChain);
+			result = hotelfinder.getFreeRoomsFromHotelChain(hotelChain);
 			printHotelArrayInfo( result, checkInDate, checkOutDate );
 		}
 		//Leitum eftir öllum hótelum með ákveðinn streng í nafninu. (Veit ekkert hvort þetta geti gagnast okkur,  fannst þetta bara kúl fídus)
 		else if(whatToCall == 4){
 			System.out.println("Leitum í hótelum sem innihalda " + hotelNameSubString + " í hótel nafninu.");
-			ArrayList<Hotel> result = hotelfinder.getFreeRoomsFromAnyHotelSubString(hotelNameSubString);
+			result = hotelfinder.getFreeRoomsFromAnyHotelSubString(hotelNameSubString);
 			printHotelArrayInfo( result, checkInDate, checkOutDate );
 		}	
 		else if(whatToCall == 5){
-			System.out.println("Ætlum að bóka. HótelID: "+hotelID+" herbergi: "+roomID+". Þetta er manual núna.");
-			hotelfinder.book(hotelID, roomID);
+			System.out.println("Ætlum að bóka. HótelID: "+result.get(hotelNR).getId()+" herbergi: "+roomID+". Þetta er manual núna.");
+			hotelfinder.book(result.get(hotelNR), roomID);
 		}
 	}
 	
