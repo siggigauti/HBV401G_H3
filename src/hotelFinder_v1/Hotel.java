@@ -17,18 +17,23 @@ public class Hotel {
 	private String hotelChain;
 	private String city;
 	private ArrayList<HotelRoom> hotelRooms;
-	
+	private ArrayList<Facility> hotelFacilities;
 	// Hotel constructor
-	public Hotel(int id, String name, String city, String hotelChain, ArrayList<HotelRoom> hotelRooms){
+	public Hotel(int id, String name, String city, String hotelChain, ArrayList<HotelRoom> hotelRooms, ArrayList<Facility> hotelFacilities){
 		super();
 		this.id = id;
 		this.name = name;
 		this.hotelChain = hotelChain;
 		this.city = city;
 		this.hotelRooms = hotelRooms;
+		this.hotelFacilities = hotelFacilities;
 	}
 	public ArrayList<HotelRoom> getHotelRooms(){
 		return this.hotelRooms;
+	}
+	
+	public ArrayList<Facility> getFacilities(){
+		return this.hotelFacilities;
 	}
 	
 	public int getId(){
@@ -63,6 +68,8 @@ public class Hotel {
 	{
 		this.city = city;
 	}
+	
+
 	/*             MEÐAN VIÐ NOTUM EKKI LOCATION
 	public void setLocation(String city, String address, double distFromCenter)
 	{

@@ -15,7 +15,7 @@ public class DBconnect {
 	//Nafnið á database er fyrir aftan aftasta skástrikið  
 	//Þetta er á forminu hostinn:port(mysql port)/database name
 	private String url = "jdbc:mysql://localhost:3306/hotelsearch";
-	//Hvaða user eru þið að nota til að tengjast?
+	//Hvaða user eru þið að nota til að tengjast? - root
 	private String userName = "root";
     private Connection dbcon;
 	private ResultSet resultSet = null;
@@ -50,15 +50,18 @@ public class DBconnect {
 			System.out.println("Get ekki búið til statement");
 		}
 		try {
-			//Gamli kóðinn fyrir Stored Procedure, (spurning um að hafa hann í smá stund ef við skyldum vilja nota hann aftur?)
 			cs = (CallableStatement)dbcon.prepareCall(query);
 			//Hérna koma færibreyturnar inn í stored procedure.
 			
-			//Ef hotelID er staerra en -1 tha erum vid ad leita ad serstoku hoteli. Annars leitum vid i ollum hotelum.
-			if(hotelString != null){
+			
+			if(hotelString != null && date1 != null){
 				cs.setString(1, hotelString);
 				cs.setDate(2, date1);
 				cs.setDate(3,  date2);
+			}
+			//Erum að ná í facilities
+			else if(date1 == null){
+				cs.setString(1, hotelString);
 			}
 			else{
 				cs.setDate(1, date1);
@@ -79,69 +82,31 @@ public class DBconnect {
 			System.out.println("Gat ekki breytt gögnum í lista :(" + e);
 		}	
 		finally{
-			closeConnection();
+			//Þurfum að finna besta tímann til að loka á tenginguna.  Er ekki viss um að þetta sé besti staðurinn.
+			//closeConnection();
 		}
-		//closeConnection();
 		return returnData;		
 	}
-	
-	/*
-	public int[] getHotelIDs(){
-		int[] returnData = null; //Þarf að vera null.
-		int total = 0;
-		ResultSet rs;
-		try {
-			stmt = (Statement)dbcon.createStatement();	
-		} catch (Exception e) {
-			System.out.println("Get ekki búið til statement");
-		}
-		try {
-			String sql ="SELECT HotelID FROM hotel";
-			rs = stmt.executeQuery(sql);
-			rs.last();
-			total = rs.getRow();
-			returnData = new int[total];
-			rs.beforeFirst();
-			int i = 0;
-			while( rs.next()){
-				returnData[i] = rs.getInt("hotelID");
-				i++;
-			}
-		} catch (Exception e) {
-			System.out.println("Gat ekki náð í dótið: "+e);
-		}
-		finally{
-			//Lokar tengingunni eftir ad buid er ad na i gogn ur database.
-			closeConnection();
-		}
-		return returnData;
-	}*/
-	
+
 	private ArrayList<ArrayList<String>> convertResultSetToLists( ResultSet result) throws SQLException{
 		int numColumns = result.getMetaData().getColumnCount();
 		ArrayList<ArrayList<String>> dataListArray = new ArrayList<ArrayList<String>>();
-		
 		//Býr til lista fyrir hvern dálk í útkomunni og setur inn í aðal listann.
 		for (int i = 0; i < numColumns; i++) {
 			 dataListArray.add( new ArrayList<String>() );
 		}
 		
-		//Fyllir listana fyrri hvern dálk
-		while( result.next() ){
-			dataListArray.get(0).add( result.getString("hotelID") );
-			dataListArray.get(1).add( result.getString("hotelName") );
-			dataListArray.get(2).add( result.getString("hotelChain") );
-			dataListArray.get(3).add( result.getString("hotelLocation") );
-			dataListArray.get(4).add( result.getString("roomID") );	
-			dataListArray.get(5).add( result.getString("numPersons") );	
-			dataListArray.get(6).add( result.getString("rate") );		
+		//Fyllir listana fyrir hvern dálk - Endurbætt falleg lausn.
+		while( result.next() ){	
+			 for(int i = 1; i <=  numColumns; i++){
+				  dataListArray.get(i-1).add( result.getString( resultSet.getMetaData().getColumnName(i) ));
+			  }
 		}
-				
 		return dataListArray;
 	}
 	
 	//Fall sem lokar á gagnagrunnstenginguna.
-	private void closeConnection() {
+	public void closeConnection() {
 	    try {
 	      if (resultSet != null) {
 	        resultSet.close();

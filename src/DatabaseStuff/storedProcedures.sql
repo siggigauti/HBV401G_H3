@@ -96,7 +96,7 @@ delimiter $$
  * Usage: call freeRoomsHotelChain(chain, fromDate, toDate )
  * Pre:   chain is the hotelchain we want to search for hotels in.  
  *		  fromDate and toDate are the checkin and checkout dates.
- * Post:  Returns data about all hotels and rooms that are not occupied between the dates.
+ * Post:  Returns data about all hotels and rooms that are not occupied between the dates where hotel belongs to the hotelChain chain.
  */
 delimiter $$
 drop procedure if exists freeRoomsHotelChain $$
@@ -108,11 +108,32 @@ begin
 end $$
 delimiter $$
 
+/*
+ * Usage: call freeRoomsHotelSubName(nameString, fromDate, toDate )
+ * Pre:   nameString is a string.
+ *		  fromDate and toDate are the checkin and checkout dates.
+ * Post:  Returns data about all hotels and rooms where nameString is a substring in the hotel name.
+ */
+delimiter $$
+drop procedure if exists freeRoomsHotelSubName $$
+create procedure freeRoomsHotelSubName(nameString VARCHAR(50), fromDate DATE, toDate DATE )
+begin
+		Call fillFreeRoomsTableAllHotels(fromDate, toDate );
+        SELECT hotel.hotelID, hotelName, hotelChain, hotelLocation, roomID, numPersons, rate 
+        FROM hotel JOIN freeRooms ON freeRooms.hotelID = hotel.hotelID WHERE INSTR( LCASE(hotelName), LCASE(nameString) ) > 0;
+end $$
+delimiter $$
 
-call freeRoomsLocation("Reykasdjavík", "2016-05-06", "2016-05-08")
-
-
-
-
+/*
+ * Usage: call freeRoomsHotelSubName( hotelName )
+ * Pre:   hotelName is the name of the hotel.
+ * Post:  Returns data about all facilities that belong to the hotel.
+ */
+delimiter $$
+drop procedure if exists getHotelFacilities $$
+create procedure getHotelFacilities( hotelName VARCHAR(50) )
+begin
+	Select ID,name,description from facility join hotelhasFacility on ID=facilityID where hotelID = (Select hotelID from hotel where hotel.hotelName = hotelName);
+end $$
 
 
