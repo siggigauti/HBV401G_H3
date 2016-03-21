@@ -87,6 +87,35 @@ public class DBconnect {
 		}
 		return returnData;		
 	}
+	
+	public void insertQueryDatabase(String query, int hotelID, int roomID, Date date1, Date date2){
+		try {
+			stmt = (Statement)dbcon.createStatement();	
+		} catch (Exception e) {
+			System.out.println("Get ekki búið til statement");
+		}
+		try {
+			cs = (CallableStatement)dbcon.prepareCall(query);
+			//Hérna koma færibreyturnar inn í stored procedure.
+			
+			cs.setInt(1, hotelID);
+			cs.setInt(2, roomID);
+			cs.setDate(3, date1);
+			cs.setDate(4, date2);
+			
+			//Kallað á stored procedure
+			cs.execute();
+			//Niðurstöður settar í resultSet
+			resultSet = cs.getResultSet();
+		} catch (Exception e) {
+			System.out.println("Get ekki fengið result! "+e);
+		}
+		
+		finally{
+			//Þurfum að finna besta tímann til að loka á tenginguna.  Er ekki viss um að þetta sé besti staðurinn.
+			//closeConnection();
+		}
+	}
 
 	private ArrayList<ArrayList<String>> convertResultSetToLists( ResultSet result) throws SQLException{
 		int numColumns = result.getMetaData().getColumnCount();

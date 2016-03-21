@@ -9,9 +9,13 @@ import java.util.ArrayList;
 public class HotelFinder {
 	
 	DBconnect conn;
+	String checkInDate;
+	String checkOutDate;
 	
-	public HotelFinder(){
+	public HotelFinder(String newCheckInDate, String newCheckOutDate){
 		conn  = new DBconnect();
+		checkInDate = newCheckInDate;
+		checkOutDate = newCheckOutDate;
 	}
 
 	// ####################################################################################### //
@@ -19,28 +23,28 @@ public class HotelFinder {
 	// ####################################################################################### //
 	
 	//Fall sem finnur öll laus hótelherbergi í ákveðnu hóteli
-	public ArrayList<Hotel> getFreeRoomsFromHotel(String hotelName, String checkInDate, String checkOutDate ){
+	public ArrayList<Hotel> getFreeRoomsFromHotel(String hotelName){
 		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
 		hotelData = conn.queryDataBase( "{call freeRoomsInHotel(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), hotelName );		
 		return hotelConstructor( hotelData );	
 	}
 	
 	//Fall sem finnur öll laus hótelherbergi í ákveðnu location
-	public ArrayList<Hotel> getFreeRoomsFromHotelLocation(String hotelLocation, String checkInDate, String checkOutDate ){			
+	public ArrayList<Hotel> getFreeRoomsFromHotelLocation(String hotelLocation ){			
 		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
 		hotelData = conn.queryDataBase( "{call freeRoomsLocation(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), hotelLocation );
 		return hotelConstructor( hotelData );	
 	}
 	
 	//Fall sem finnur öll laus hótelherbergi í ákveðnu location
-	public ArrayList<Hotel> getFreeRoomsFromHotelChain(String hotelChainName, String checkInDate, String checkOutDate ){				
+	public ArrayList<Hotel> getFreeRoomsFromHotelChain(String hotelChainName){				
 		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
 		hotelData = conn.queryDataBase( "{call freeRoomsHotelChain(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), hotelChainName );
 		return hotelConstructor( hotelData );	
 	}
 
 	//Fall sem finnur öll laus hótelherbergi í öllum hótelum.
-	public ArrayList<Hotel> getFreeRoomsFromAnyHotel( String checkInDate, String checkOutDate ){
+	public ArrayList<Hotel> getFreeRoomsFromAnyHotel(){
 		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
 		// hotelString = null er til að láta vita að við ætlum ekki að leita í öllum hótelum
 		hotelData = conn.queryDataBase( "{call freeRoomsAllHotels(?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), null );	
@@ -48,7 +52,7 @@ public class HotelFinder {
 	}
 	
 	//Fall sem finnur öll laus hótelherbergi í öllum hótelum.
-	public ArrayList<Hotel> getFreeRoomsFromAnyHotelSubString(String subString, String checkInDate, String checkOutDate ){
+	public ArrayList<Hotel> getFreeRoomsFromAnyHotelSubString(String subString){
 		ArrayList<ArrayList<String>> hotelData = new ArrayList<ArrayList<String>>();
 		// hotelString = null er til að láta vita að við ætlum ekki að leita í öllum hótelum
 		hotelData = conn.queryDataBase( "{call freeRoomsHotelSubName(?, ?, ?)}", convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate), subString );	
@@ -161,6 +165,19 @@ public class HotelFinder {
 		Date returnDate = new Date(parsedDate.getTime());
 		
 		return returnDate;		
+	}
+	
+	
+	//Notkun: book(hotelID, roomID);
+	//Fyrir: Víðværu breyturnar checkIn og checkOut eru búnar að staðfesta að herbergin eru laus.
+	//       Þau ID sem notandin hefur aðgang að eru laus á dögunum á milli checkIn og checkOut.
+	//       hotelID er ID fyrir hótelið sem er verið að bóka.
+	//       roomID er ID á því herbergi sem verið er að bóka.
+	//       Nýtir sér víðværu breyturnar checkInDate og checkOutDate í hotelFinder obj.
+	//Eftir: Búið er að búa til nýja röð í bookings í DB sem tilgreinir að herbergið er frátekið.
+	public void book(int hotelID, int roomID){
+		Booker booker = new Booker();
+		booker.book(hotelID, roomID, convertToSqlDate(checkInDate), convertToSqlDate(checkOutDate));
 	}
 	
 }
