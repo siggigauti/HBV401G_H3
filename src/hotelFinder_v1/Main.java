@@ -13,7 +13,8 @@ public class Main {
 		//WhatToCall = 3 -> Leita eftir hótelkeðju
 		//WhatToCall = 4 -> Leita eftir substring í hótelnafni.
 		//WhatToCall = 5 -> bóka eftir hotel og roomID.
-		int whatToCall = 1; 
+		//WhatToCall = 6 -> Leita að hóteli með ákveðin facilities.
+		int whatToCall = 6; 
 		int hotelNR = 1; //Þetta er hvaða hótel úr listanum á að bóka úr.
 		int roomID = 11; //Þetta er roomID á því herbergi sem á að bóka, hendir villu ef roomID passar ekki við eitthvað herbergi.
 		
@@ -23,6 +24,8 @@ public class Main {
 		//Hér fyrir neðan eru breytur sem við getum notað til að þrengja leitina.
 		String checkInDate = "2016-05-06", checkOutDate = "2016-05-08";
 		String hotelName = "Hótel Reykjavík", hotelChain = "Radison", hotelLocation = "Reykjavík", hotelNameSubString = "Reyk";
+		//Athuga hvort hótel sé með eftirfarandi facilities.
+		int[] facilityToLookFor = {1, 2, 3, 6};
 		HotelFinder hotelfinder = new HotelFinder(checkInDate, checkOutDate);
 		
 		//Leitum eftir hótelnafni
@@ -58,6 +61,11 @@ public class Main {
 		else if(whatToCall == 5){
 			System.out.println("Ætlum að bóka. HótelID: "+result.get(hotelNR).getId()+" herbergi: "+roomID+". Þetta er manual núna.");
 			hotelfinder.book(result.get(hotelNR), roomID);
+		}
+		else if(whatToCall == 6){
+			System.out.println("Ætlum að leita að hóteli sem hefur ákveðin facilities");
+			result = hotelfinder.getHotelWithFacilities(facilityToLookFor);
+			printHotelArrayInfo(result, checkInDate, checkOutDate);		
 		}
 	}
 	

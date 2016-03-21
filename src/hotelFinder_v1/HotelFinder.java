@@ -187,8 +187,40 @@ public class HotelFinder {
 		}
 		else{
 			System.out.println("Bókun tókst ekki! Gefið roomID var ekki til í listanum af hótelherbergjum fyrir gefið hótel.");
-		}
-		
+		}		
 	}
 	
+	//Fer í gegnum öll hótelin sem eru laus og síar út þau sem hafa facilities sem leitað er að
+	public ArrayList<Hotel> getHotelWithFacilities( int[] facilityID ){
+		ArrayList<Hotel> hotels = getFreeRoomsFromAnyHotel();	
+		ArrayList<Hotel> returnHotels = new ArrayList<Hotel>();
+		for (int i = 0; i < hotels.size(); i++) {		
+			if(hotelHasFacilities(hotels.get(i), facilityID)){
+				returnHotels.add( hotels.get(i) );
+			}			
+		}
+		return returnHotels;
+	}
+	
+	//Fall sem athugar hvort hótel sé með öll facilities sem eru í integer fylkinu facilities.
+	//Nota fylki svo það sé hægt að athuga fleiri en eitt facility.
+	private boolean hotelHasFacilities(Hotel hotel, int[] facilityID){
+		boolean found = false;
+		//Lykkja sem fer í gegnum öll facilities á hóteli.
+		for (int i = 0; i < facilityID.length; i++) {
+			//Lykkja sem athugar hvort eitthvað af þeim facilities séu í facilityID fylkinu.
+			for (int j = 0; j < hotel.getFacilities().size(); j++) {
+				if( hotel.getFacilities().get(j).getType() == facilityID[i]){
+					found = true;
+				}
+			}
+			if(!found){
+				//Hættum og skilum false um leið og við finnum ekki eitt facility.
+				return false;
+			}
+			//Setjum found = false fyrir næstu umferð.
+			found = false;
+		}		
+		return true;
+	}
 }
