@@ -269,9 +269,6 @@ public class UserInterface {
 		panel_1.add(rdbtnAllHotels);
 		
 		txtCheckIn = new JTextField();
-
-
-		txtCheckIn.setText(" ");
 		txtCheckIn.setBounds(16, 85, 86, 20);
 		panel_1.add(txtCheckIn);
 		txtCheckIn.setColumns(10);
