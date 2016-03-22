@@ -116,6 +116,32 @@ public class DBconnect {
 			//closeConnection();
 		}
 	}
+	
+	public void dropQueryDatabase(String query, int BookID){
+		try {
+			stmt = (Statement)dbcon.createStatement();	
+		} catch (Exception e) {
+			System.out.println("Get ekki búið til statement");
+		}
+		try {
+			cs = (CallableStatement)dbcon.prepareCall(query);
+			//Hérna koma færibreyturnar inn í stored procedure.
+			
+			cs.setInt(1, BookID);
+			
+			//Kallað á stored procedure
+			cs.execute();
+			//Niðurstöður settar í resultSet
+			resultSet = cs.getResultSet();
+		} catch (Exception e) {
+			System.out.println("Get ekki fengið result! "+e);
+		}
+		
+		finally{
+			//Þurfum að finna besta tímann til að loka á tenginguna.  Er ekki viss um að þetta sé besti staðurinn.
+			//closeConnection();
+		}
+	}
 
 	private ArrayList<ArrayList<String>> convertResultSetToLists( ResultSet result) throws SQLException{
 		int numColumns = result.getMetaData().getColumnCount();

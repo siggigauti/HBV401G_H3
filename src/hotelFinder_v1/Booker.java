@@ -12,5 +12,9 @@ public class Booker {
 		int hotelID = hotel.getId();
 		conn.insertQueryDatabase( "{call createBooking(?,?,?,?)}", hotelID, roomID, date1, date2);
 	}
-	//Vantar enn function til að eyða bókun.
+
+	public void unbook(Hotel hotel,int BookID){
+		conn.dropQueryDatabase( "{call dropBooking(?)}", BookID);
+	}
+
 }

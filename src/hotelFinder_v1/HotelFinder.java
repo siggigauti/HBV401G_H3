@@ -190,6 +190,14 @@ public class HotelFinder {
 		}		
 	}
 	
+	public void unbook(Hotel hotel, int BookID){
+		
+		Booker booker = new Booker();
+		booker.unbook( hotel ,BookID);
+		System.out.println("Afbókun tókst, herbergið sem var bókað fyrir tíman "+checkInDate+" til "+checkOutDate +" hefur verið eytt.");
+			
+	}
+	
 	//Fer í gegnum öll hótelin sem eru laus og síar út þau sem hafa facilities sem leitað er að
 	public ArrayList<Hotel> getHotelWithFacilities( int[] facilityID ){
 		ArrayList<Hotel> hotels = getFreeRoomsFromAnyHotel();	

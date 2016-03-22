@@ -14,7 +14,7 @@ public class Main {
 		//WhatToCall = 4 -> Leita eftir substring í hótelnafni.
 		//WhatToCall = 5 -> bóka eftir hotel og roomID.
 		//WhatToCall = 6 -> Leita að hóteli með ákveðin facilities.
-		int whatToCall = 6; 
+		int whatToCall = 2; 
 		int hotelNR = 1; //Þetta er hvaða hótel úr listanum á að bóka úr.
 		int roomID = 11; //Þetta er roomID á því herbergi sem á að bóka, hendir villu ef roomID passar ekki við eitthvað herbergi.
 		
@@ -67,6 +67,9 @@ public class Main {
 			result = hotelfinder.getHotelWithFacilities(facilityToLookFor);
 			printHotelArrayInfo(result, checkInDate, checkOutDate);		
 		}
+		
+		//hotelfinder.book(result.get(1), 11);
+		hotelfinder.unbook(result.get(1), 14);
 	}
 	
 	private static void printHotelArrayInfo( ArrayList<Hotel> hotelArray, String checkInDate, String checkOutDate ){
