@@ -271,7 +271,7 @@ public class UserInterface {
 		txtCheckIn = new JTextField();
 
 
-		txtCheckIn.setText("  ");
+		txtCheckIn.setText(" ");
 		txtCheckIn.setBounds(16, 85, 86, 20);
 		panel_1.add(txtCheckIn);
 		txtCheckIn.setColumns(10);
