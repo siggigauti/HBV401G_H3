@@ -210,6 +210,18 @@ public class HotelFinder {
 		return returnHotels;
 	}
 	
+	//Fer í gegnum hótelin í hotels listanum og filterar út þau hótel sem eru með rétt facilities.
+	public ArrayList<Hotel> filterHotelWithFacilities(ArrayList<Hotel> hotels, int[] facilityID ){	
+		ArrayList<Hotel> returnHotels = new ArrayList<Hotel>();
+		for (int i = 0; i < hotels.size(); i++) {		
+			if(hotelHasFacilities(hotels.get(i), facilityID)){
+				returnHotels.add( hotels.get(i) );
+			}			
+		}
+		return returnHotels;
+	}
+	
+	
 	//Fall sem athugar hvort hótel sé með öll facilities sem eru í integer fylkinu facilities.
 	//Nota fylki svo það sé hægt að athuga fleiri en eitt facility.
 	private boolean hotelHasFacilities(Hotel hotel, int[] facilityID){
@@ -218,7 +230,7 @@ public class HotelFinder {
 		for (int i = 0; i < facilityID.length; i++) {
 			//Lykkja sem athugar hvort eitthvað af þeim facilities séu í facilityID fylkinu.
 			for (int j = 0; j < hotel.getFacilities().size(); j++) {
-				if( hotel.getFacilities().get(j).getType() == facilityID[i]){
+				if( hotel.getFacilities().get(j).getType() == facilityID[i] || facilityID[i] == 0){
 					found = true;
 				}
 			}
