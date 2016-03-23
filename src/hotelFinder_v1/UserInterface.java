@@ -306,8 +306,9 @@ public class UserInterface {
 		btnBookSelectedRoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				hotelfinder.book( hotels.get( hotelList.getSelectedIndex() ), selectedRoomID);
-				hotelRoomList.remove( hotelRoomList.getSelectedIndex() );
+				//hotelRoomList.remove( hotelRoomList.getSelectedIndex() );
 				hotelRoomListModel.remove( hotelRoomList.getSelectedIndex());
+				btnBookSelectedRoom.setEnabled(false);
 			}
 		});
 		btnBookSelectedRoom.setEnabled(false);
