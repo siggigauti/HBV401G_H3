@@ -20,13 +20,4 @@ public class Facility {
 	public String getDescription(){
 		return description;
 	}
-	public void setType(int type){
-		this.type = type;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
-	public void setDescription(String description){
-		this.description = description;
-	}
 }

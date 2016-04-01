@@ -21,31 +21,21 @@ public class Hotel {
 		this.hotelFacilities = hotelFacilities;
 	}
 	public ArrayList<HotelRoom> getHotelRooms(){
-		return this.hotelRooms;
+		return hotelRooms;
 	}
 	
 	public ArrayList<Facility> getFacilities(){
-		return this.hotelFacilities;
+		return hotelFacilities;
 	}
 	
 	public int getId(){
 		return id;
 	}
 	
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-	
 	public String getName(){
 		return name;
 	}
-	
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-	
+
 	public String getCity()
 	{
 		return city;
@@ -53,13 +43,9 @@ public class Hotel {
 	
 	public String getChain()
 	{
-		return this.hotelChain;
+		return hotelChain;
 	}
-	
-	public void setCity(String city)
-	{
-		this.city = city;
-	}
+
 	
 
 	/*             MEÐAN VIÐ NOTUM EKKI LOCATION
