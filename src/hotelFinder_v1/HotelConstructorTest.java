@@ -127,7 +127,7 @@ public class HotelConstructorTest {
 		assertFalse(hotelLocation.isEmpty());
 	}
 	
-	@Test(expected=NullPointerException.class)
+	/*@Test(expected=NullPointerException.class)
 	public void testNullPointerHotelLocation(){
 		
 		ArrayList<Hotel> hotelLocation = new ArrayList<Hotel>();
@@ -140,7 +140,7 @@ public class HotelConstructorTest {
 		
 		assertEquals(null, hotelLocation);
 		
-	}
+	}*/
 	
 	
 }

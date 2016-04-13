@@ -6,6 +6,14 @@ public class RoomType {
 	int personCapacity;
 	String view;
 	
+	public RoomType(String typeName, int noOfBeds, int personCapacity, String view){
+		super();
+		this.typeName = typeName;
+		this.noOfBeds = noOfBeds;
+		this.personCapacity = personCapacity;
+		this.view = view;
+	}
+	
 	public String getTypeName(){
 		return typeName;
 	}

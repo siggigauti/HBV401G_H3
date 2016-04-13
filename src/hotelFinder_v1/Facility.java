@@ -6,6 +6,7 @@ public class Facility {
 	private String description;
 	
 	public Facility(int type, String name, String description){
+		super();
 		this.type = type;
 		this.name = name;
 		this.description = description;
