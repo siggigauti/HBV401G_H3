@@ -21,5 +21,4 @@ public class HotelRoom {
 	public int getId(){
 		return this.id;	
 	}
-	//VANTAR ROOMTYPE OBJECT
 }

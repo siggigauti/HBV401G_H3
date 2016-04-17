@@ -46,63 +46,8 @@ public class Hotel {
 		return hotelChain;
 	}
 
-	
-
-	/*             MEÐAN VIÐ NOTUM EKKI LOCATION
-	public void setLocation(String city, String address, double distFromCenter)
-	{
-		this.hotelLocation = new Location(city, address, distFromCenter);
-	}
-	
-	public Location getLocation()
-	{
-		return hotelLocation;
-	}
-	*/
 	@Override
 	public String toString(){
 		return "[ id : " + id + " ]"   + "\n" +  "[ name : " + name + " ]" + "\n" + "[ city : " + city + " ]" + "\n";
 	}
-	
-	
-	
-	
 }
-/*
-//-----------------------------------------------------------------------------------------------	
-	private int hotelYear;
-	
-	public void setHotelYear(int year)
-	{
-		hotelYear = year;
-	}
-	public int getHotelYear(){
-		System.out.println("This was build in: " + hotelYear);
-		return hotelYear;
-	}
-//-----------------------------------------------------------------------------------------------	
-//-----------------------------------------------------------------------------------------------
-	
-	public Hotel(String name)
-	{
-		//Constructur sem tekur nafn inn i object
-		System.out.println("Passed Name is: " + name);
-	}
-//-----------------------------------------------------------------------------------------------
-	
-	public static void main(String []args)
-	{
-		//following statement will create an object of myName
-		Hotel Fjorukrain = new Hotel("fjorukrain");
-		
-		//Sitjum byggingarar a hotel: 2009
-		Fjorukrain.setHotelYear(2009);
-		
-		// saekjum sidan bygginarar hotel fjorukrain.
-		Fjorukrain.getHotelYear();
-		
-		//Haegt er ad saekja gognin strax svona:
-		System.out.println("Variable Value: " + Fjorukrain.hotelYear);
-		
-	}
-	*/

@@ -51,9 +51,7 @@ public class DBconnect {
 		}
 		try {
 			cs = (CallableStatement)dbcon.prepareCall(query);
-			//Hérna koma færibreyturnar inn í stored procedure.
-			
-			
+			//Hérna koma færibreyturnar inn í stored procedure.		
 			if(hotelString != null && date1 != null){
 				cs.setString(1, hotelString);
 				cs.setDate(2, date1);
@@ -66,8 +64,7 @@ public class DBconnect {
 			else{
 				cs.setDate(1, date1);
 				cs.setDate(2,  date2);			
-			}
-			
+			}		
 			//Kallað á stored procedure
 			cs.execute();
 			//Niðurstöður settar í resultSet
@@ -81,10 +78,6 @@ public class DBconnect {
 		} catch (Exception e) {
 			System.out.println("Gat ekki breytt gögnum í lista :(" + e);
 		}	
-		finally{
-			//Þurfum að finna besta tímann til að loka á tenginguna.  Er ekki viss um að þetta sé besti staðurinn.
-			//closeConnection();
-		}
 		return returnData;		
 	}
 	
@@ -110,11 +103,6 @@ public class DBconnect {
 		} catch (Exception e) {
 			System.out.println("Get ekki fengið result! "+e);
 		}
-		
-		finally{
-			//Þurfum að finna besta tímann til að loka á tenginguna.  Er ekki viss um að þetta sé besti staðurinn.
-			//closeConnection();
-		}
 	}
 	
 	public void dropQueryDatabase(String query, int BookID){
@@ -125,21 +113,14 @@ public class DBconnect {
 		}
 		try {
 			cs = (CallableStatement)dbcon.prepareCall(query);
-			//Hérna koma færibreyturnar inn í stored procedure.
-			
-			cs.setInt(1, BookID);
-			
+			//Hérna koma færibreyturnar inn í stored procedure.		
+			cs.setInt(1, BookID);		
 			//Kallað á stored procedure
 			cs.execute();
 			//Niðurstöður settar í resultSet
 			resultSet = cs.getResultSet();
 		} catch (Exception e) {
 			System.out.println("Get ekki fengið result! "+e);
-		}
-		
-		finally{
-			//Þurfum að finna besta tímann til að loka á tenginguna.  Er ekki viss um að þetta sé besti staðurinn.
-			//closeConnection();
 		}
 	}
 
@@ -163,18 +144,17 @@ public class DBconnect {
 	//Fall sem lokar á gagnagrunnstenginguna.
 	public void closeConnection() {
 	    try {
-	      if (resultSet != null) {
-	        resultSet.close();
-	      }
-
-	      if (stmt != null) {
-	    	  stmt.close();
-	      }
-
-	      if (dbcon != null) {
-	        dbcon.close();
-	      }
-	    } catch (Exception e) {
+		      if (resultSet != null) {
+		        resultSet.close();
+		      }
+	
+		      if (stmt != null) {
+		    	  stmt.close();
+		      }
+		      if (dbcon != null) {
+		        dbcon.close();
+		      }
+	      } catch (Exception e) {
 
 	    }
 	  }

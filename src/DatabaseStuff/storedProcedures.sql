@@ -13,10 +13,8 @@ begin
 end $$
 
 /*  
- * Usage: call freeRoomsInHotel(hotel, fromDate, toDate )
- * Pre:	  fromDate and toDate are the checkin and checkout dates.
- * Post:  Returns the info about rooms that are not occupied during
- * 		  the two dates in specific hotel.
+ *  Returns the info about rooms that are not occupied during
+ *  the two dates in specific hotel.
  * 		  
  */
 delimiter $$
@@ -29,11 +27,7 @@ begin
 end $$
 
 /*
- * Usage: call createBooking( hotel, room, fromDate, toDate )
- * Pre:   hotel is the ID of the hotel to book a room in.
- *        room is the ID of the room to book.
- *        fromDate and toDate are the checkin and checkout dates.
- * Post:  Creates a booking with the above values.
+ *  Creates a booking with the above values.
  */
 delimiter $$
 drop procedure if exists createBooking $$
@@ -43,9 +37,7 @@ begin
 end $$
 
 /*
- * Usage: call fillFreeRoomsTableAllHotels(fromDate, toDate )
- * Pre:   fromDate and toDate are the checkin and checkout dates.
- * Post:  Fills the temp table with all free rooms in all hotels.
+ *  Fills the temp table with all free rooms in all hotels.
  */
  delimiter $$
 drop procedure if exists fillFreeRoomsTableAllHotels $$
@@ -57,14 +49,13 @@ begin
 											WHERE (roomID,hotelID) NOT IN ( SELECT roomID,hotelID
 													 FROM bookings 
                                                      WHERE fromDate >= checkInDate AND fromDate < checkOutDate 
-													 OR toDate > CheckInDate AND toDate <= checkOutDate );
+													 OR toDate > CheckInDate AND toDate <= checkOutDate )
+											ORDER BY hotelID;
 end $$
 
 
 /*
- * Usage: call freeRoomsAllHotels(fromDate, toDate )
- * Pre:   fromDate and toDate are the checkin and checkout dates.
- * Post:  Returns data about all hotels and rooms that are not occupied between the dates.
+ * Returns data about all hotels and rooms that are not occupied between the dates.
  */
 delimiter $$
 drop procedure if exists freeRoomsAllHotels $$
@@ -76,11 +67,10 @@ begin
 end $$
 delimiter $$
 
+call freeRoomsAllHotels("05-05-2016", "06-06-2016")
+
 /*
- * Usage: call freeRoomsLocation(location, fromDate, toDate )
- * Pre:   location is the location we want to search in.  
- *		  fromDate and toDate are the checkin and checkout dates.
- * Post:  Returns data about all hotels and rooms that are not occupied between the dates.
+ * Returns data about all hotels and rooms that are not occupied between the dates.
  */
 delimiter $$
 drop procedure if exists freeRoomsLocation $$
@@ -93,10 +83,7 @@ end $$
 delimiter $$
 
 /*
- * Usage: call freeRoomsHotelChain(chain, fromDate, toDate )
- * Pre:   chain is the hotelchain we want to search for hotels in.  
- *		  fromDate and toDate are the checkin and checkout dates.
- * Post:  Returns data about all hotels and rooms that are not occupied between the dates where hotel belongs to the hotelChain chain.
+ * Returns data about all hotels and rooms that are not occupied between the dates where hotel belongs to the hotelChain chain.
  */
 delimiter $$
 drop procedure if exists freeRoomsHotelChain $$
@@ -109,10 +96,7 @@ end $$
 delimiter $$
 
 /*
- * Usage: call freeRoomsHotelSubName(nameString, fromDate, toDate )
- * Pre:   nameString is a string.
- *		  fromDate and toDate are the checkin and checkout dates.
- * Post:  Returns data about all hotels and rooms where nameString is a substring in the hotel name.
+ * Returns data about all hotels and rooms where nameString is a substring in the hotel name.
  */
 delimiter $$
 drop procedure if exists freeRoomsHotelSubName $$
@@ -125,9 +109,7 @@ end $$
 delimiter $$
 
 /*
- * Usage: call getHotelFacilities( hotelName )
- * Pre:   hotelName is the name of the hotel.
- * Post:  Returns data about all facilities that belong to the hotel.
+ * Returns data about all facilities that belong to the hotel.
  */
 delimiter $$
 drop procedure if exists getHotelFacilities $$
