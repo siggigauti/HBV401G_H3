@@ -97,7 +97,7 @@ public class HotelFinder {
 				//Ef hotel id breytist þá þarf að búa til nýjan hotel hlut
 				//því við erum komnir í annað hotel. Búum einnig til nýtt hótel ef við erum komnir á seinasta herbergið.
 				if(hotelID != prevHotelID){	
-					System.out.println("Bý til hlut fyrir hótelið "+prevHotelName+" það er með " + hotelRooms.subList(from, to).size()  + " laus herbergi. HOTEL ID ER: "+ hotelID);
+					System.out.println("Bý til hlut fyrir hótelið "+prevHotelName+" það er með " + hotelRooms.subList(from, to).size()  + " laus herbergi. HOTEL ID ER: "+ prevHotelID);
 					System.out.println("Næ í facilities fyrir hótelið");
 					//Næ í facilities fyrir hótelið sem við ætlum að búa til hlut fyrir.
 					hotelFacilities = getFacilitiesForHotel(prevHotelName);
@@ -124,7 +124,7 @@ public class HotelFinder {
 			if(hotelRooms.size() > 0){
 			System.out.println("Bý til hlut fyrir hótelið: " + hotelName+", það er með " + hotelRooms.subList(from, to).size() + " laus herbergi. HotelID er: "+hotelID);
 			System.out.println("Næ í facilities fyrir hótelið");
-			hotelFacilities = getFacilitiesForHotel(prevHotelName);
+			hotelFacilities = getFacilitiesForHotel(hotelName);
 			returnHotels.add( new Hotel( hotelID,hotelName, hotelLocation, hotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)), hotelFacilities ));	
 			}
 			
