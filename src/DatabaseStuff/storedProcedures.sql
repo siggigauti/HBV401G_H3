@@ -119,3 +119,27 @@ begin
 end $$
 
 
+
+/*
+ * Writes a review for a hotel.
+ */
+ delimiter $$
+ drop procedure if exists writeReview $$
+ create procedure writeReview( hotelID int, title VARCHAR(55), content VARCHAR(500), stars INT, reviewDate DATE, reviewerName VARCHAR(55))
+ begin
+	INSERT INTO review(hotelID, title, content, stars, reviewDate, reviewerName) VALUES (hotelID, title, content, stars, reviewDate, reviewerName);
+end $$
+/*
+ * Gets all review for a hotel
+ */
+ delimiter $$
+ drop procedure if exists getReviews $$
+ create procedure getReviews( hotelName VARCHAR(50))
+ begin
+	SELECT title, content, stars, reviewDate, reviewerName FROM review WHERE hotelID = (Select hotelID from hotel where hotel.hotelName = hotelName);
+end $$
+
+/*call getReviews("Hótel Reykjavík");
+
+
+*/

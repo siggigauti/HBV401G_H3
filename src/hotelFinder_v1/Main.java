@@ -70,6 +70,7 @@ public class Main {
 		//hotelfinder.book(result.get(1), 1);
 		//hotelfinder.book(result.get(1), 11);
 		//hotelfinder.unbook(result.get(1), 14);
+		//hotelfinder.writeReview(4, 5, "Kúl hótel", "Flott hótel", "2015-05-05", "Jón Jónsson");
 	}
 	
 	private static void printHotelArrayInfo( ArrayList<Hotel> hotelArray, String checkInDate, String checkOutDate ){
@@ -109,6 +110,22 @@ public class Main {
 					System.out.println("|------| Herbergjanúmer: " + hotelArray.get(i).getHotelRooms().get(j).getId() );
 					System.out.println("|------| Pláss fyrir: " + hotelArray.get(i).getHotelRooms().get(j).getNumPerson() +" manneskjur."  );
 				}	
+			}
+			System.out.println("|----------------------------------------------|");
+			System.out.println("|------|      Umsagnir um hótelið       |------|");
+			System.out.println("|----------------------------------------------|");
+			if(hotelArray.get(i).getReviews().size() == 0){
+				System.out.println("|------| Þetta hótel hefur engar umsagnir");
+			}
+			else{
+				for(int j = 0; j < hotelArray.get(i).getReviews().size(); j++){
+					System.out.println("|------| Umsögn frá: " + hotelArray.get(i).getReviews().get(j).getReviewer());
+					System.out.println("|------| Dagsetning: " + hotelArray.get(i).getReviews().get(j).getDate());
+					System.out.println("|------| Stjörnur: " + hotelArray.get(i).getReviews().get(j).getStars());
+					System.out.println("|------| Titill: " + hotelArray.get(i).getReviews().get(j).getTitle());
+					System.out.println("|------| Umsögn: " + hotelArray.get(i).getReviews().get(j).getContent());
+					System.out.println("|--------| ");
+				}
 			}	
 		}	
 	}	

@@ -47,7 +47,7 @@ public class DBconnect {
 		try {
 			stmt = (Statement)dbcon.createStatement();	
 		} catch (Exception e) {
-			System.out.println("Get ekki búið til statement");
+			System.out.println(e);
 		}
 		try {
 			cs = (CallableStatement)dbcon.prepareCall(query);
@@ -70,13 +70,12 @@ public class DBconnect {
 			//Niðurstöður settar í resultSet
 			resultSet = cs.getResultSet();
 		} catch (Exception e) {
-			System.out.println("Get ekki fengið result! "+e);
+			System.out.println(e);
 		}
 		try {
-			System.out.println("Breyti gögnum í lista af strengjum");	
 			returnData = convertResultSetToLists(resultSet);
 		} catch (Exception e) {
-			System.out.println("Gat ekki breytt gögnum í lista :(" + e);
+			System.out.println(e);
 		}	
 		return returnData;		
 	}
@@ -85,7 +84,7 @@ public class DBconnect {
 		try {
 			stmt = (Statement)dbcon.createStatement();	
 		} catch (Exception e) {
-			System.out.println("Get ekki búið til statement");
+			System.out.println(e);
 		}
 		try {
 			cs = (CallableStatement)dbcon.prepareCall(query);
@@ -101,7 +100,32 @@ public class DBconnect {
 			//Niðurstöður settar í resultSet
 			resultSet = cs.getResultSet();
 		} catch (Exception e) {
-			System.out.println("Get ekki fengið result! "+e);
+			System.out.println(e);
+		}
+	}
+	
+	//Bætir inn nýju review fyrir hótel.
+	public void insertReview(int hotelID, int stars, String title, String content, Date date1, String reviewerName){
+		try {
+			stmt = (Statement)dbcon.createStatement();	
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		try {
+			cs = (CallableStatement)dbcon.prepareCall("call writeReview(?, ?, ?, ?, ?, ?)");
+			//Hérna koma færibreyturnar inn í stored procedure.	
+			cs.setInt(1, hotelID);
+			cs.setString(2, title);
+			cs.setString(3, content);
+			cs.setInt(4, stars);
+			cs.setDate(5, date1);
+			cs.setString(6, reviewerName);
+			//Kallað á stored procedure
+			cs.execute();
+			//Niðurstöður settar í resultSet
+			resultSet = cs.getResultSet();
+		} catch (Exception e) {
+			System.out.println("Villa í innsetningu " +e);
 		}
 	}
 	
@@ -109,7 +133,7 @@ public class DBconnect {
 		try {
 			stmt = (Statement)dbcon.createStatement();	
 		} catch (Exception e) {
-			System.out.println("Get ekki búið til statement");
+			System.out.println(e);
 		}
 		try {
 			cs = (CallableStatement)dbcon.prepareCall(query);
@@ -120,7 +144,7 @@ public class DBconnect {
 			//Niðurstöður settar í resultSet
 			resultSet = cs.getResultSet();
 		} catch (Exception e) {
-			System.out.println("Get ekki fengið result! "+e);
+			System.out.println(e);
 		}
 	}
 

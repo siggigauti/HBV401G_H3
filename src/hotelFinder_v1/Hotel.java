@@ -10,8 +10,9 @@ public class Hotel {
 	private String city;
 	private ArrayList<HotelRoom> hotelRooms;
 	private ArrayList<Facility> hotelFacilities;
+	private ArrayList<Review> hotelReviews;
 
-	public Hotel(int id, String name, String city, String hotelChain, ArrayList<HotelRoom> hotelRooms, ArrayList<Facility> hotelFacilities){
+	public Hotel(int id, String name, String city, String hotelChain, ArrayList<HotelRoom> hotelRooms, ArrayList<Facility> hotelFacilities, ArrayList<Review> hotelReviews){
 		super();
 		this.id = id;
 		this.name = name;
@@ -19,6 +20,7 @@ public class Hotel {
 		this.city = city;
 		this.hotelRooms = hotelRooms;
 		this.hotelFacilities = hotelFacilities;
+		this.hotelReviews = hotelReviews;
 	}
 	public ArrayList<HotelRoom> getHotelRooms(){
 		return hotelRooms;
@@ -27,7 +29,9 @@ public class Hotel {
 	public ArrayList<Facility> getFacilities(){
 		return hotelFacilities;
 	}
-	
+	public ArrayList<Review> getReviews(){
+		return hotelReviews;
+	}
 	public int getId(){
 		return id;
 	}

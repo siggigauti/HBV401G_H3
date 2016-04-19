@@ -76,7 +76,7 @@ public class HotelFinder {
 			ArrayList<Hotel> returnHotels = new ArrayList<Hotel>();
 			ArrayList<HotelRoom> hotelRooms = new ArrayList<HotelRoom>();
 			ArrayList<Facility> hotelFacilities = new ArrayList<Facility>();
-				
+			ArrayList<Review> hotelReviews = new ArrayList<Review>();
 			//Upphafstilli prevHotelID svona til þess að búa ekki til hótel
 			//um leið og lykkjan keyrir sig í gang.  Hótelin eiga að vera búin til
 			//Þegar hotelID breytist eða ef seinasta herbergið er lesið inn.
@@ -97,14 +97,14 @@ public class HotelFinder {
 				//Ef hotel id breytist þá þarf að búa til nýjan hotel hlut
 				//því við erum komnir í annað hotel. Búum einnig til nýtt hótel ef við erum komnir á seinasta herbergið.
 				if(hotelID != prevHotelID){	
-					System.out.println("Bý til hlut fyrir hótelið "+prevHotelName+" það er með " + hotelRooms.subList(from, to).size()  + " laus herbergi. HOTEL ID ER: "+ prevHotelID);
-					System.out.println("Næ í facilities fyrir hótelið");
 					//Næ í facilities fyrir hótelið sem við ætlum að búa til hlut fyrir.
 					hotelFacilities = getFacilitiesForHotel(prevHotelName);
+					//Næ í reviews fyrir hótelið
+					hotelReviews = getReviewsForHotel(prevHotelName);
 					//Bætum inn nýju hóteli með herbergjunum sem við bjuggum til í seinustu ítrunum.
 					//Setjum gömlu gildin vegna þess að við erum að búa til hótel sem er með herbergin sem við vorum að
 					//búa til í seinustu ítrunum.  Þegar við erum komnir á þennan stað í lykkjunni þá er komið nýtt hótel í HotelName.
-					returnHotels.add( new Hotel( prevHotelID, prevHotelName, prevHotelLocation, prevHotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)), hotelFacilities));	
+					returnHotels.add( new Hotel( prevHotelID, prevHotelName, prevHotelLocation, prevHotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)), hotelFacilities, hotelReviews));	
 					from = to;
 				}		
 								
@@ -115,17 +115,15 @@ public class HotelFinder {
 						
 				//Það þarf að bæta inn nýju herbergi í hverri ítrun lykkjunar.
 				//Býr til nýtt hótelherbergi og bætir í lista.
-				System.out.println("Bæti hótelherbergi með roomID: " + roomID);
 				hotelRooms.add( new HotelRoom( roomID, numPersons, rate ));
 				to++;
 			}
 			
 			//Bý til seinasta hótelið ef það eru einhver herbergi í herbergjalistanum.
 			if(hotelRooms.size() > 0){
-			System.out.println("Bý til hlut fyrir hótelið: " + hotelName+", það er með " + hotelRooms.subList(from, to).size() + " laus herbergi. HotelID er: "+hotelID);
-			System.out.println("Næ í facilities fyrir hótelið");
 			hotelFacilities = getFacilitiesForHotel(hotelName);
-			returnHotels.add( new Hotel( hotelID,hotelName, hotelLocation, hotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)), hotelFacilities ));	
+			hotelReviews = getReviewsForHotel(prevHotelName);
+			returnHotels.add( new Hotel( hotelID,hotelName, hotelLocation, hotelChain, new ArrayList<HotelRoom>(hotelRooms.subList(from, to)), hotelFacilities, hotelReviews ));	
 			}
 			
 			conn.closeConnection();
@@ -151,7 +149,26 @@ public class HotelFinder {
 		}	
 		return facilityList;
 	}
-	
+	//Nær í öll reviews fyrir gefið hótel.
+	private ArrayList<Review> getReviewsForHotel( String hotelName ){
+		ArrayList<Review> reviewList = new ArrayList<Review>();
+		ArrayList<ArrayList<String>> reviewData = new ArrayList<ArrayList<String>>();
+		reviewData = conn.queryDataBase( "{call getReviews(?)}", null, null, hotelName );
+		
+		int reviewStars;
+		String reviewTitle = "", reviewContent = "", reviewer = "", reviewDate = "";
+		
+		for (int i = 0; i < reviewData.get(0).size(); i++) {			
+			reviewTitle = reviewData.get(0).get(i);
+			reviewContent = reviewData.get(1).get(i);
+			reviewStars = Integer.parseInt( reviewData.get(2).get(i) );
+			reviewDate = reviewData.get(3).get(i);
+			reviewer = reviewData.get(4).get(i);
+			
+			reviewList.add( new Review( reviewTitle, reviewContent, reviewStars, reviewer, reviewDate) );			
+		}
+		return reviewList;
+	}
 	//Fall sem breytir dagsetningu á strengjaformi yfir á sql.date form
 	private Date convertToSqlDate(String date){
 		
@@ -198,6 +215,11 @@ public class HotelFinder {
 			
 	}
 	
+	//Skrifar umsögn um hótel.
+	public void writeReview(int hotelID, int stars, String title, String content, String date, String reviewerName){	
+		conn.insertReview(hotelID, stars, title, content, convertToSqlDate(date), reviewerName);
+	}
+
 	//Fer í gegnum öll hótelin sem eru laus og síar út þau sem hafa facilities sem leitað er að
 	public ArrayList<Hotel> getHotelWithFacilities( int[] facilityID ){
 		ArrayList<Hotel> hotels = getFreeRoomsFromAnyHotel();	
